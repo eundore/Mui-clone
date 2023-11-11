@@ -10,8 +10,65 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" type="text/css" href="./css/main.css" />
+    <link rel="stylesheet" type="text/css" href="./css/tabs.css" />
+    <script src="./js/tabs.js" type="module"></script>
   </head>
   <body>
-    <main></main>
+    <main>
+      <section>
+        <h1>Tabs</h1>
+        <div class="tabs-container">
+          <div class="tabs-border">
+            <div class="tabs-box">
+              <div class="tabs-scroller">
+                <div class="tab-list">
+                  <button
+                    type="button"
+                    role="tab"
+                    id="tab-1"
+                    tabindex="-1"
+                    aria-selected="true"
+                    aria-controls="tabpanel-1"
+                  >
+                    ITEM ONE
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    id="tab-2"
+                    tabindex="-1"
+                    aria-selected="false"
+                    aria-controls="tabpanel-2"
+                  >
+                    ITEM TWO
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    id="tab-3"
+                    tabindex="-1"
+                    aria-selected="false"
+                    aria-controls="tabpanel-3"
+                  >
+                    ITEM THREE
+                  </button>
+                </div>
+                <div class="tabs-indicator"></div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" id="tabpanel-1" aria-labelledby="tab-1">
+            Item One
+          </div>
+          <div role="tabpanel" id="tabpanel-2" aria-labelledby="tab-2" hidden>
+            Item Two
+          </div>
+          <div role="tabpanel" id="tabpanel-3" aria-labelledby="tab-3" hidden>
+            Item Three
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
