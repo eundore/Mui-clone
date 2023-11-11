@@ -1,44 +1,46 @@
 const ITEM_HEIGHT = 46;
 const NUM_ITEMS = 200;
 
-const container = document.querySelector(".list-container");
-const wrapper = document.querySelector(".list-wrapper");
+const virtualizedList = document.querySelector("#virtualizedList");
+const virtualizedListWrapper = document.querySelector(
+  ".virtualizedList-wrapper"
+);
 
 const action = () => {
-  const scrollTop = container.scrollTop;
-  const windowHeight = container.clientHeight;
+  const scrollTop = virtualizedList.scrollTop;
+  const windowHeight = virtualizedList.clientHeight;
 
-  let startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
-  let endIndex = Math.min(
+  const startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
+  const endIndex = Math.min(
     NUM_ITEMS - 1,
     Math.floor((scrollTop + windowHeight) / ITEM_HEIGHT)
   );
 
-  wrapper.replaceChildren();
+  virtualizedListWrapper.replaceChildren();
 
   for (let i = startIndex; i <= endIndex; i++) {
-    const item = document.createElement("div");
-    item.classList += "list-item";
-    item.style.top = `${ITEM_HEIGHT * i}px`;
+    const virtualizedListItem = document.createElement("div");
+    virtualizedListItem.classList += "virtualizedList-item";
+    virtualizedListItem.style.top = `${ITEM_HEIGHT * i}px`;
 
-    const btn = document.createElement("div");
-    btn.className += "list-item-btn";
-    btn.innerText = `Item ${i + 1}`;
+    const virtualizedListBtn = document.createElement("div");
+    virtualizedListBtn.className += "virtualizedList-item-btn";
+    virtualizedListBtn.innerText = `Item ${i + 1}`;
 
-    item.appendChild(btn);
+    virtualizedListItem.appendChild(virtualizedListBtn);
 
-    btn.addEventListener("click", (e) => {
+    virtualizedListBtn.addEventListener("click", (e) => {
       const ripple = document.createElement("span");
       ripple.style.left = `${e.offsetX}px`;
       ripple.style.top = `${e.offsetY}px`;
-      btn.appendChild(ripple);
+      virtualizedListBtn.appendChild(ripple);
 
       setTimeout(function () {
-        btn.removeChild(ripple);
+        virtualizedListBtn.removeChild(ripple);
       }, 700);
     });
 
-    wrapper.appendChild(item);
+    virtualizedListWrapper.appendChild(virtualizedListItem);
   }
 };
 
@@ -48,7 +50,7 @@ const throttle = (callback, delay) => {
   let timer;
   return function () {
     if (!timer) {
-      timer = setTimeout((_) => {
+      timer = setTimeout(() => {
         callback.apply(this, arguments);
         timer = undefined;
       }, delay);
@@ -56,4 +58,4 @@ const throttle = (callback, delay) => {
   };
 };
 
-container.addEventListener("scroll", throttle(action, 100));
+virtualizedList.addEventListener("scroll", throttle(action, 100));
