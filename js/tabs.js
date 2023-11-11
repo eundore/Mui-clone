@@ -1,9 +1,15 @@
-const btns = document.querySelectorAll('[role="tab"]');
-const panels = document.querySelectorAll('[role="tabpanel"]');
-const indicator = document.querySelector(".tabs-indicator");
-indicator.style.width = `${btns[0].clientWidth}px`;
+const tabBtns = document.querySelectorAll('[role="tab"]');
+const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+const tabsIndicator = document.querySelector(".tabs-indicator");
+tabsIndicator.style.width = `${tabBtns[0].clientWidth}px`;
 
-btns.forEach((btn, idx) => {
+let left = [0];
+
+tabBtns.forEach((btn, idx) => {
+  if (idx > 0) {
+    left[idx] = left[idx - 1] + tabBtns[idx - 1].clientWidth;
+  }
+
   btn.addEventListener("click", (e) => {
     const ripple = document.createElement("span");
 
@@ -15,35 +21,20 @@ btns.forEach((btn, idx) => {
       btn.removeChild(ripple);
     }, 700);
 
-    btns.forEach((btn) => {
-      if (btn.ariaSelected === "true") {
-        btn.ariaSelected = "false";
-      }
-    });
+    const currentTab = document.querySelector(
+      '[role="tab"][aria-selected="true"]'
+    );
+    const currentPanelId = currentTab.getAttribute("aria-controls");
+    const currentPanel = document.querySelector(`#${currentPanelId}`);
+    currentPanel.hidden = true;
+    currentTab.ariaSelected = false;
 
-    btn.ariaSelected = "true";
+    const selectedPanelId = btn.getAttribute("aria-controls");
+    const selectedPanel = document.querySelector(`#${selectedPanelId}`);
+    selectedPanel.hidden = false;
+    btn.ariaSelected = true;
 
-    let left = 0;
-
-    btns.forEach((btn, index) => {
-      if (idx > index) {
-        left += btn.clientWidth;
-      }
-      return false;
-    });
-
-    indicator.style.left = `${left}px`;
-    indicator.style.width = `${btn.clientWidth}px`;
-
-    const selected = btn.getAttribute("aria-controls");
-
-    panels.forEach((panel) => {
-      if (selected === panel.id) {
-        panel.hidden = false;
-        return;
-      }
-
-      panel.hidden = true;
-    });
+    tabsIndicator.style.left = `${left[idx]}px`;
+    tabsIndicator.style.width = `${btn.clientWidth}px`;
   });
 });
